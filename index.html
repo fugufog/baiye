@@ -1,0 +1,51 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>婵</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="百业网站">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <!-- Add your site or application content here -->
+  <p>Hello world! This is HTML5 Boilerplate.</p>
+  <script src="js/app.js"></script>
+  <div id="app">
+    <input type="button" value="显示/隐藏" v-on:click="isshowchange">
+    <a v-show="isshow">{{ message }}</a>
+  </div>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        isshow: false,
+        message: 'Hello Vue!'
+      },
+      methods: {
+        isshowchange: function () {
+          this.isshow = !this.isshow
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
