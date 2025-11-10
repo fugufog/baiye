@@ -1,0 +1,522 @@
+/* 花名册页面核心样式 */
+.roster-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    font-family: "Ma Shan Zheng", serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 卷轴背景（用纯色+纹理替代图片，避免路径问题） */
+.roster-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF8E7;
+    background-image: linear-gradient(rgba(224, 201, 153, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 201, 153, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.9;
+    z-index: -1;
+}
+
+/* 主体容器 */
+.roster-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255, 253, 245, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(102, 60, 20, 0.2);
+    border: 1px solid rgba(165, 120, 60, 0.3);
+    margin-top: 50px;
+}
+
+/* 标题区 */
+.roster-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.roster-header h1 {
+    font-size: 36px;
+    color: #8B4513;
+    margin: 0 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-decoration {
+    width: 60px;
+    height: 40px;
+    background-color: #A5783C;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+/* 名录顶部（说明+搜索框+添加按钮）- 优化布局适配搜索功能 */
+.roster-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.roster-intro {
+    font-size: 18px;
+    color: #5D2906;
+    text-align: left;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0 20px;
+    flex: 1;
+    /* 让说明文本自适应宽度 */
+    min-width: 200px;
+    /* 移动端最小宽度，避免挤压 */
+}
+
+/* 新增：搜索框容器样式 */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    /* 让搜索框自适应宽度 */
+    min-width: 250px;
+    /* 移动端最小宽度，确保显示完整 */
+    max-width: 400px;
+    /* 限制最大宽度，避免过宽 */
+}
+
+/* 新增：搜索输入框样式 */
+.search-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #A5783C;
+    border-radius: 30px;
+    font-size: 16px;
+    color: #5D2906;
+    background: #FFF;
+    font-family: "Ma Shan Zheng", serif;
+    /* 匹配古风字体 */
+}
+
+.search-input::placeholder {
+    color: #A5783C;
+    opacity: 0.7;
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(165, 120, 60, 0.1);
+    /* 聚焦时轻微高亮 */
+}
+
+/* 新增：搜索清空按钮样式 */
+.search-btn {
+    padding: 10px 18px;
+    background: #F5F0E6;
+    border: 2px solid #A5783C;
+    border-radius: 30px;
+    color: #8B4513;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 16px;
+}
+
+.search-btn:hover {
+    background: #E8D9B9;
+    transform: translateY(-2px);
+    /* hover上浮效果，与添加按钮风格统一 */
+}
+
+/* 新增：搜索结果提示样式 */
+.search-tip {
+    text-align: center;
+    font-size: 16px;
+    color: #7D4E24;
+    margin-bottom: 20px;
+    padding: 8px;
+    background: rgba(224, 201, 153, 0.1);
+    /* 浅背景突出提示 */
+    border-radius: 8px;
+}
+
+.add-hero-btn {
+    padding: 10px 25px;
+    background: #A5783C;
+    color: #FFF;
+    border: none;
+    border-radius: 30px;
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(165, 120, 60, 0.3);
+}
+
+.add-hero-btn:hover {
+    background: #8B5A2B;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(165, 120, 60, 0.5);
+}
+
+/* 门派筛选标签 */
+.faction-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.faction-tab {
+    padding: 8px 20px;
+    background: #F5F0E6;
+    border: 2px solid #A5783C;
+    border-radius: 30px;
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 18px;
+    color: #8B4513;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faction-tab:hover {
+    background: #E8D9B9;
+    transform: translateY(-2px);
+}
+
+.faction-tab.active {
+    background: #A5783C;
+    color: #FFF;
+    box-shadow: 0 0 10px rgba(165, 120, 60, 0.5);
+}
+
+/* 侠客列表 */
+.hero-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* 侠客卡片 */
+.hero-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #FFF8E7;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(102, 60, 20, 0.1);
+    border: 1px solid #E0C999;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.hero-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(102, 60, 20, 0.15);
+}
+
+/* 侠客头像 */
+.hero-avatar {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #F5F0E6;
+}
+
+.avatar-frame {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 130px;
+    height: 130px;
+    border: 3px solid #A5783C;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* 侠客信息 */
+.hero-info {
+    text-align: center;
+    width: 100%;
+}
+
+.hero-gameName {
+    font-size: 22px;
+    color: #8B4513;
+    margin: 0 0 10px 0;
+}
+
+.hero-realName {
+    font-size: 16px;
+    color: #7D4E24;
+    margin-bottom: 8px;
+}
+
+.hero-faction {
+    font-size: 16px;
+    color: #A5783C;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.hero-id {
+    font-size: 14px;
+    color: #5D2906;
+    margin-top: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.hero-id.show {
+    max-height: 50px;
+}
+
+/* 无数据提示（适配搜索和筛选场景） */
+.empty-tip {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 18px;
+    color: #7D4E24;
+    padding: 50px 0;
+    font-family: "Ma Shan Zheng", serif;
+}
+
+/* 添加成员弹窗样式 */
+.modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.add-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    background: #FFF8E7;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(102, 60, 20, 0.3);
+    border: 2px solid #A5783C;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: #A5783C;
+    color: #FFF;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 24px;
+    margin: 0;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #FFF;
+    font-size: 24px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.add-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 16px;
+    color: #8B4513;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 15px;
+    border: 2px solid #E0C999;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #5D2906;
+    background: #FFF;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #A5783C;
+    box-shadow: 0 0 0 3px rgba(165, 120, 60, 0.1);
+}
+
+.form-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    background: #F5F0E6;
+    border: 2px solid #E0C999;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #7D4E24;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #E8D9B9;
+}
+
+.confirm-btn {
+    padding: 10px 25px;
+    background: #A5783C;
+    color: #FFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+    background: #8B5A2B;
+}
+
+/* 默认头像样式（无头像时显示） */
+.avatar-img[src*="default.png"] {
+    background: #F5F0E6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #A5783C;
+    content: "侠";
+}
+
+/* 底部说明 */
+.roster-footer {
+    text-align: center;
+    font-size: 16px;
+    color: #5D2906;
+    padding-top: 20px;
+    border-top: 1px dashed #A5783C;
+}
+
+/* 新增：响应式适配（确保移动端搜索框、标签栏正常显示） */
+@media (max-width: 768px) {
+    .roster-top {
+        flex-direction: column;
+        /* 移动端垂直排列元素 */
+        align-items: stretch;
+        /* 元素占满宽度 */
+    }
+
+    .search-container {
+        max-width: 100%;
+        /* 搜索框在移动端占满宽度 */
+    }
+
+    .faction-tabs {
+        gap: 10px;
+        /* 减小标签间距，避免换行过多 */
+    }
+
+    .faction-tab {
+        padding: 6px 15px;
+        /* 缩小标签尺寸，适配移动端 */
+        font-size: 16px;
+    }
+}
+
+/* 1. 优化头像加载过渡效果（避免图片突然出现） */
+.avatar-img {
+    transition: opacity 0.3s ease;
+    /* 新增：图片加载淡入效果 */
+    opacity: 1;
+}
+
+.avatar-img[src*="default.png"] {
+    /* 保留原有默认头像样式，新增图标居中优化 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Ma Shan Zheng", serif;
+    /* 确保“侠”字字体正确 */
+}
+
+/* 2. 优化卡片信息hover显示动画（更流畅） */
+.hero-id {
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    /* 新增透明度过渡 */
+    opacity: 0;
+    /* 默认隐藏时透明 */
+}
+
+.hero-id.show {
+    max-height: 50px;
+    opacity: 1;
+    /* 显示时渐显 */
+}
+
+/* 3. 弹窗表单聚焦样式强化（提升交互反馈） */
+.form-group input:focus,
+.form-group select:focus {
+    /* 在原有基础上新增边框颜色加深，聚焦更明显 */
+    border-color: #8B5A2B;
+    box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.2);
+}

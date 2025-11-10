@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>婵</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/notice.css">
+  <link rel="stylesheet" href="css/roster.css">
+  <link rel="stylesheet" href="css/album.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
   <meta name="description" content="百业网站">
 
   <meta property="og:title" content="">
@@ -14,38 +18,963 @@
   <meta property="og:image" content="">
   <meta property="og:image:alt" content="">
 
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" href="img/favicon.ico" sizes="any">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/icon.png">
 
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#fafafa">
+
+  <!-- 引入 Vue2 + Vue Router 3（适配Vue2版本） -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-router@3/dist/vue-router.js"></script>
 </head>
 
 <body>
-  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="js/app.js"></script>
-  <div id="app">
-    <input type="button" value="显示/隐藏" v-on:click="isshowchange">
-    <a v-show="isshow">{{ message }}</a>
+  <div id="app-root">
+    <!-- 顶部触发区：鼠标靠近这里（屏幕顶部）时触发显示导航栏 -->
+    <div class="mouse-trigger-area" @mouseenter="showNav" @mouseleave="startHideTimer"></div>
+    <!-- 导航栏：添加动态控制类 .nav-dynamic -->
+    <div class="nav nav-dynamic" :class="{ 'nav-show': isNavShow }" @mouseenter="keepNavShow"
+      @mouseleave="startHideTimer">
+      <router-link to="/">
+        <div class="ancient-btn">首页</div>
+      </router-link>
+      <router-link to="/notice">
+        <div class="ancient-btn">公告</div>
+      </router-link>
+      <router-link to="/roster">
+        <div class="ancient-btn">花名册</div>
+      </router-link>
+      <router-link to="/album">
+        <div class="ancient-btn">相册</div>
+      </router-link>
+    </div>
+
+    <!-- 路由出口：所有页面内容会渲染到这里 -->
+    <router-view></router-view>
   </div>
+
+  <script src="js/app.js"></script>
+
   <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        isshow: false,
-        message: 'Hello Vue!'
+    // 1. 注册 Vue Router（Vue2 语法）
+    Vue.use(VueRouter);
+
+    // 2. 定义页面组件（保留原有所有内容）
+    const Home = {
+      template: `
+        <div class="page">
+          <div class="kv-bg" style="size: 100vw 100vh;">
+            <img
+              srcset="
+                img/bg10_0d47d77.jpg 750w,
+                img/bg10_0d47d77.jpg 1920w
+              "
+              alt="个人网页首屏背景"
+              class="kv-bg-imge"
+              src="img/bg10_0d47d77.jpg"
+              loading="eager"
+            >
+            <video
+              data-url="video/kv-fab-2k.mp4"
+              data-src="video/kv-fab-2k.mp4"
+              muted
+              autoplay
+              loop
+              preload="metadata"
+              aria-hidden="true"
+            ></video>
+          </div>
+
+          <div class="logo">
+            <img src="img/logo_a9b36efe.png" alt="logo">
+          </div>
+
+          <div class="chan">
+              <img src="img/mingcheng.png" alt="百业名称">
+          </div>
+        </div>
+      `,
+      data() {
+        return {
+          isshow: true,
+          message: '婵',
+          src: "img/chan.png"
+        };
       },
       methods: {
-        isshowchange: function () {
-          this.isshow = !this.isshow
+        isshowchange() {
+          this.isshow = !this.isshow; // 修正原拼写错误
         }
       }
-    })
+    };
+
+    // 公告页组件
+    const Notice = {
+      template: `
+        <!-- 公告页组件（需嵌入到 Vue 路由配置中，对应 /notice 路径） -->
+  <div class="notice-page">
+    <!-- 宣纸风格背景（含纤维纹理+祥云暗纹） -->
+    <div class="notice-bg"></div>
+
+    <!-- 公告主体内容 -->
+    <div class="notice-container">
+      <!-- 标题栏（江湖令样式） -->
+      <div class="notice-header">
+        <div class="header-decoration left"></div>
+        <h1>【燕云江湖令】群公告</h1>
+        <div class="header-decoration right"></div>
+      </div>
+
+      <!-- 敬称 -->
+      <p class="salutation">各位游侠、侠女台鉴：</p>
+
+      <!-- 引言 -->
+      <p class="intro">
+        时维宋初，燕云大地风烟初定，江湖暗流仍涌。为使诸位同道行侠无忧、聚义有序，现将群中规训、近期要事详列如下，望共守江湖道义，同赴快意征程！
+      </p>
+
+      <!-- 群规板块 -->
+      <div class="notice-section">
+        <h2 class="section-title">📜 群规三则 · 共护侠义之地</h2>
+        <ul class="rule-list">
+          <li>禁言无忌：不得妄议朝政、辱骂同袍、散播谣言，违者逐出众侠之列，永不得入；</li>
+          <li>互通有无：可分享秘境坐标、武学心得、博物图谱，谢绝广告骚扰、私下欺诈，违者废其“群籍”；</li>
+          <li>尊长爱幼：对初入江湖的萌新多予指点，与资深游侠谦逊请教，共筑热血江湖。</li>
+        </ul>
+      </div>
+
+      <!-- 近期要事板块 -->
+      <div class="notice-section">
+        <h2 class="section-title">🗺️ 近期要事 · 速览江湖动态</h2>
+        <ul class="event-list">
+          <li>
+            <span class="event-tag">【组队试炼】</span>
+            百业本每周一晚9点半两车同时开，由我和茶老师各带一队，如果两车都满了的话等两车打完后会考虑继续发车，百业派对每晚9点半开放。
+          </li>
+          <li>
+            <span class="event-tag">【江湖夜谈】</span>
+            每日晚九点半，游戏内开启百业派对，望大家踊跃参加。
+          </li>
+          <li>
+            <span class="event-tag">【新侠入群】</span>
+            新人入群需自行修改群名片为游戏昵称”。
+          </li>
+        </ul>
+      </div>
+
+      <!-- 警示板块 -->
+      <div class="notice-section warning">
+        <h2 class="section-title">⚠️ 特别警示 · 谨防江湖陷阱</h2>
+        <p class="warning-desc">近期有不法之徒假冒“群管”索要账号令牌，诸位切记：</p>
+        <ul class="warning-list">
+          <li>官方绝不会私下索取密码、验证码、token等私密信息；</li>
+          <li>组队交易需走游戏内正规渠道，勿信“线下代练”“低价充值”等骗局；</li>
+          <li>遇可疑人员即刻@群管，共同缉拿江湖败类！</li>
+        </ul>
+      </div>
+
+      <!-- 结语 -->
+      <div class="notice-footer">
+        <p class="conclusion">
+          燕云十六声，声声藏江湖；群中诸同道，个个是侠雄。愿诸位在此以武会友，以义相聚，共探五代十国的市井繁华与山河壮阔，在刀光剑影中书写属于自己的侠义传奇！
+        </p>
+        <p class="contact-title">若有要事相商，可私聊群内三位主事：</p>
+        <ul class="contact-list">
+          <li>总舵主（群主）：统筹群中大小事务</li>
+          <li>掌旗使（管理员1）：负责组队试炼与活动组织</li>
+          <li>文书令（管理员2）：解答新手疑问与资料整理</li>
+        </ul>
+        <div class="signature">
+          —— 燕云聚义群 敬上<br>
+          —— 时维宋初·秋望之日
+        </div>
+      </div>
+    </div>
+  </div>
+      `
+    };
+
+    // --------------- 修改后的花名册组件（替换本地存储为后端接口）---------------
+    const Roster = {
+      template: `
+    <div class="roster-page">
+      <!-- 卷轴背景 -->
+      <div class="roster-bg"></div>
+
+      <!-- 花名册主体容器 -->
+      <div class="roster-container">
+        <!-- 标题区 -->
+        <div class="roster-header">
+          <div class="scroll-decoration left"></div>
+          <h1>燕云江湖 · 侠客名录</h1>
+          <div class="scroll-decoration right"></div>
+        </div>
+
+        <!-- 名录说明+添加按钮+新增搜索框 -->
+        <div class="roster-top">
+          <p class="roster-intro">
+            江湖儿女，各显其能。此名录记录燕云群中诸位侠士核心信息，便于同道相识、组队同行。
+          </p>
+
+          <!-- 新增：搜索框容器 -->
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              v-model="searchKey"
+              placeholder="搜索群名片/游戏名/江湖ID..."
+              @input="debounceSearch"
+            >
+            <button class="search-btn" @click="clearSearch">
+              🗑️ 清空
+            </button>
+          </div>
+
+          <!-- 添加成员按钮 -->
+          <button class="add-hero-btn" @click="openAddModal">
+            📜 新增侠士
+          </button>
+        </div>
+
+        <!-- 门派筛选标签（原内容不变） -->
+        <div class="faction-tabs">
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === 'all' }"
+            @click="activeFaction = 'all'"
+          >
+            全部门派
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '无门无派' }"
+            @click="activeFaction = '无门无派'"
+          >
+            无门无派
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '青溪' }"
+            @click="activeFaction = '青溪'"
+          >
+            青溪
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '狂澜' }"
+            @click="activeFaction = '狂澜'"
+          >
+            狂澜
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '墨山道' }"
+            @click="activeFaction = '墨山道'"
+          >
+            墨山道
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '九流门' }"
+            @click="activeFaction = '九流门'"
+          >
+            九流门
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '天泉' }"
+            @click="activeFaction = '天泉'"
+          >
+            天泉
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '梨园' }"
+            @click="activeFaction = '梨园'"
+          >
+            梨园
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '无心谷' }"
+            @click="activeFaction = '无心谷'"
+          >
+            无心谷
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '醉花阴' }"
+            @click="activeFaction = '醉花阴'"
+          >
+            醉花阴
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '孤云' }"
+            @click="activeFaction = '孤云'"
+          >
+            孤云
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '文津馆' }"
+            @click="activeFaction = '文津馆'"
+          >
+            文津馆
+          </button>
+          <button
+            class="faction-tab"
+            :class="{ active: activeFaction === '三更天' }"
+            @click="activeFaction = '三更天'"
+          >
+            三更天
+          </button>
+        </div>
+
+        <!-- 新增：搜索结果提示 -->
+        <div class="search-tip" v-if="searchKey.trim()">
+          🔍 搜索关键词：{{ searchKey }} | 找到 {{ filteredHeroes.length }} 位侠士
+        </div>
+
+        <!-- 加载状态提示 -->
+        <div class="loading-tip" v-if="isLoading">
+          🔍 正在加载侠士名录...
+        </div>
+
+        <!-- 侠客卡片列表（原内容不变，key改为后端返回的_id） -->
+        <div class="hero-list" v-else>
+          <!-- 过滤显示选中门派的侠客（筛选逻辑新增搜索） -->
+          <div
+            class="hero-card"
+            v-for="hero in filteredHeroes"
+            :key="hero._id" @mouseenter="hero.hover = true"
+            @mouseleave="hero.hover = false"
+          >
+            <!-- 侠客头像 -->
+            <div class="hero-avatar">
+              <img
+                :src="hero.avatar || 'img/avatars/default.png'" :alt="hero.gameName + '头像'"
+                class="avatar-img"
+                @error="handleAvatarError($event)">
+              <div class="avatar-frame"></div>
+            </div>
+
+            <!-- 核心信息 -->
+            <div class="hero-info">
+              <h3 class="hero-gameName">{{ hero.gameName }}</h3> <!-- 游戏名 -->
+              <div class="hero-realName">真名：{{ hero.realName }}</div> <!-- 姓名 -->
+              <div class="hero-faction">{{ hero.faction }}</div> <!-- 门派 -->
+              <div class="hero-id" :class="{ show: hero.hover }">
+                江湖ID：{{ hero.id }} <!-- ID（hover显示） -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 无数据提示（新增搜索场景适配） -->
+          <div class="empty-tip" v-if="filteredHeroes.length === 0">
+            <span v-if="searchKey.trim()">未找到包含「{{ searchKey }}」的侠士~</span>
+                        <span v-else>暂无该门派侠士，可点击「新增侠士」登记信息~</span>
+          </div>
+        </div>
+
+        <!-- 底部说明（修改为后端存储提示） -->
+        <div class="roster-footer">
+          <p>📜 名录同步至云端，多设备访问一致 | 新入江湖侠士可自行登记</p>
+        </div>
+      </div>
+
+      <!-- 添加成员弹窗 -->
+      <div v-if="isAddModalOpen">
+        <!-- 新增一个根容器包裹所有弹窗元素 -->
+  <div class="modal-container">
+    <div class="modal-mask" @click="closeAddModal"></div>
+    <div class="add-modal">
+      <div class="modal-header">
+        <h2>登记侠士信息</h2>
+        <button class="close-btn" @click="closeAddModal">×</button>
+      </div>
+        <form class="add-form" @submit.prevent="addHero">
+          <div class="form-group">
+            <label>群名片：</label>
+            <input
+              type="text"
+              v-model="newHero.realName"
+              required
+              placeholder="请输入群名片"
+            >
+          </div>
+          <div class="form-group">
+            <label>游戏名：</label>
+            <input
+              type="text"
+              v-model="newHero.gameName"
+              required
+              placeholder="请输入游戏内昵称"
+            >
+          </div>
+          <div class="form-group">
+            <label>所属门派：</label>
+            <select v-model="newHero.faction" required>
+              <option value="">请选择门派</option>
+              <!-- 新增：无门无派选项（与筛选标签对应） -->
+              <option value="无门无派">无门无派</option>
+              <option value="孤云">孤云</option>
+              <option value="九流门">九流门</option>
+              <option value="醉花阴">醉花阴</option>
+              <option value="梨园">梨园</option>
+              <option value="青溪">青溪</option>
+              <option value="天泉">天泉</option>
+              <option value="三更天">三更天</option>
+              <option value="墨山道">墨山道</option>
+              <option value="无心谷">无心谷</option>
+              <option value="狂澜">狂澜</option>
+              <option value="文津馆">文津馆</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>江湖ID：</label>
+            <input
+              type="text"
+              v-model="newHero.id"
+              required
+              placeholder="请输入游戏ID/群ID"
+            >
+          </div>
+          <div class="form-group">
+            <label>上传头像（可选）：</label>
+            <input
+              type="file"
+              accept="image/*"
+              @change="handleAvatarUpload"
+            >
+          </div>
+          <div class="form-btns">
+            <button type="button" class="cancel-btn" @click="closeAddModal">取消</button>
+            <button type="submit" class="confirm-btn" :disabled="isSubmitting">
+              <span v-if="isSubmitting">提交中...</span>
+              <span v-else>确认登记</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+
+    </div>`,
+      data() {
+        return {
+          BASE_URL: "http://39.107.247.51:3306",
+          activeFaction: 'all', // 门派筛选
+          isAddModalOpen: false, // 添加弹窗开关
+          searchKey: '', // 搜索关键词
+          searchTimer: null, // 防抖计时器
+          newHero: { // 新侠士表单数据
+            realName: '', // 群名片
+            gameName: '', // 游戏名
+            faction: '', // 门派
+            id: '', // 江湖ID
+            avatar: '' // 头像Base64
+          },
+          heroes: [], // 侠士列表（后端返回数据）
+          isLoading: false, // 加载状态
+          isSubmitting: false // 提交状态
+        };
+      },
+      computed: {
+        // 筛选逻辑（保留原有功能，基于后端返回数据）
+        filteredHeroes() {
+          let result = [...this.heroes];
+
+          // 1. 门派筛选
+          if (this.activeFaction !== 'all') {
+            result = result.filter(hero => hero.faction === this.activeFaction);
+          }
+
+          // 2. 关键词搜索（群名片/游戏名/ID）
+          if (this.searchKey.trim()) {
+            const key = this.searchKey.trim().toLowerCase();
+            result = result.filter(hero =>
+              hero.realName.toLowerCase().includes(key) ||
+              hero.gameName.toLowerCase().includes(key) ||
+              hero.id.toLowerCase().includes(key)
+            );
+          }
+
+          return result;
+        }
+      },
+      mounted() {
+        // 页面加载时从后端获取侠士数据（替换原localStorage读取）
+        this.fetchHeroes();
+      },
+      methods: {
+        // 1. 从后端获取侠士列表（核心接口调用）
+        async fetchHeroes() {
+          this.isLoading = true;
+          try {
+            // 后端接口地址（替换为你的服务器IP）
+            const BASE_URL = "http://39.107.247.51:3306";
+            let url = `${BASE_URL}/api/heroes`;
+
+            // 拼接筛选参数（门派+搜索关键词）
+            const params = new URLSearchParams();
+            if (this.activeFaction !== 'all') params.append('faction', this.activeFaction);
+            if (this.searchKey.trim()) params.append('search', this.searchKey.trim());
+            if (params.toString()) url += `?${params.toString()}`;
+
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('获取侠士名录失败');
+            const data = await res.json();
+
+            // 给每个侠士添加hover状态（适配原有样式）
+            this.heroes = data.map(hero => ({ ...hero, hover: false }));
+          } catch (err) {
+            console.error('错误：', err.message);
+            alert('获取侠士名录失败，请刷新页面重试');
+          } finally {
+            this.isLoading = false;
+          }
+        },
+
+        // 2. 新增侠士（提交到后端，替换原localStorage存储）
+        async addHero() {
+          this.isSubmitting = true;
+          try {
+            const BASE_URL = "http://39.107.247.51:3306";
+            const res = await fetch(`${BASE_URL}/api/heroes`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(this.newHero) // 提交表单数据
+            });
+
+            if (!res.ok) throw new Error('登记侠士信息失败');
+            const newHeroData = await res.json();
+
+            // 实时更新列表（无需重新请求）
+            this.heroes.unshift({ ...newHeroData, hover: false });
+            this.closeAddModal();
+            alert('侠士信息登记成功！');
+          } catch (err) {
+            console.error('错误：', err.message);
+            alert('登记失败，请检查数据格式并重试');
+          } finally {
+            this.isSubmitting = false;
+          }
+        },
+
+        // 3. 原有辅助方法（保留不变）
+        handleAvatarUpload(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (res) => {
+            this.newHero.avatar = res.target.result; // 转为Base64
+          };
+          reader.readAsDataURL(file);
+        },
+        openAddModal() {
+          this.isAddModalOpen = true;
+          this.newHero = { realName: '', gameName: '', faction: '', id: '', avatar: '' };
+        },
+        closeAddModal() {
+          this.isAddModalOpen = false;
+        },
+        debounceSearch() {
+          clearTimeout(this.searchTimer);
+          this.searchTimer = setTimeout(() => {
+            this.fetchHeroes(); // 搜索时重新请求后端
+          }, 300);
+        },
+        clearSearch() {
+          this.searchKey = '';
+          this.fetchHeroes(); // 清空搜索后重新请求
+        },
+        handleAvatarError(e) {
+          e.target.src = 'img/avatars/default.png'; // 头像加载失败兜底
+        }
+      },
+      beforeDestroy() {
+        clearTimeout(this.searchTimer);
+      }
+    };
+
+    // --------------- 修改后的相册组件（替换本地存储为后端接口）---------------
+    const Album = {
+      template: `
+    <div class="album-page">
+      <!-- 古风背景（宣纸纹理） -->
+      <div class="album-bg"></div>
+
+      <!-- 相册主体容器 -->
+      <div class="album-container">
+        <!-- 标题区 -->
+        <div class="album-header">
+          <div class="scroll-decoration left"></div>
+          <h1>燕云江湖 · 风物志</h1>
+          <div class="scroll-decoration right"></div>
+        </div>
+
+        <!-- 说明+上传按钮 -->
+        <div class="album-top">
+          <p class="album-intro">
+            收录江湖秘境、侠客合影、武学图谱、异兽奇珍，记录燕云江湖的点点滴滴~
+          </p>
+          <!-- 上传图片按钮 -->
+          <button class="upload-btn" @click="openUploadModal">
+            📷 上传风物
+          </button>
+        </div>
+
+        <!-- 分类筛选标签 -->
+        <div class="album-tabs">
+          <button
+            class="album-tab"
+            :class="{ active: activeCategory === 'all' }"
+            @click="activeCategory = 'all'; fetchPhotos()"
+          >
+            全部风物
+          </button>
+          <button
+            class="album-tab"
+            :class="{ active: activeCategory === '秘境' }"
+            @click="activeCategory = '秘境'; fetchPhotos()"
+          >
+            秘境风光
+          </button>
+          <button
+            class="album-tab"
+            :class="{ active: activeCategory === '合影' }"
+            @click="activeCategory = '合影'; fetchPhotos()"
+          >
+            侠客合影
+          </button>
+          <button
+            class="album-tab"
+            :class="{ active: activeCategory === '图谱' }"
+            @click="activeCategory = '图谱'; fetchPhotos()"
+          >
+            武学图谱
+          </button>
+          <button
+            class="album-tab"
+            :class="{ active: activeCategory === '奇珍' }"
+            @click="activeCategory = '奇珍'; fetchPhotos()"
+          >
+            异兽奇珍
+          </button>
+        </div>
+
+        <!-- 加载状态提示 -->
+        <div class="loading-tip" v-if="isLoading">
+          🏞️ 正在加载江湖风物...
+        </div>
+
+        <!-- 图片列表（v-else 隐藏加载状态） -->
+        <div class="photo-grid" v-else>
+          <!-- 筛选后的图片（key改为后端返回的_id） -->
+          <div
+            class="photo-card"
+            v-for="photo in filteredPhotos"
+            :key="photo._id"
+            @click="openPreview(photo)"
+            @mouseenter="photo.hover = true"
+            @mouseleave="photo.hover = false"
+          >
+            <!-- 图片主体 -->
+            <div class="photo-wrapper">
+              <img
+                :src="photo.url"
+                :alt="photo.title"
+                class="photo-img"
+                loading="lazy"
+                @error="handlePhotoError($event)"
+              >
+              <!-- 图片分类标签 -->
+              <div class="photo-category">{{ photo.category }}</div>
+            </div>
+            <!-- 图片标题（hover显示） -->
+            <div class="photo-title" :class="{ show: photo.hover }">
+              {{ photo.title }}
+            </div>
+          </div>
+
+          <!-- 无图片提示 -->
+          <div class="empty-photo" v-if="filteredPhotos.length === 0">
+            暂无该分类风物，点击「上传风物」分享你的江湖所见~
+          </div>
+        </div>
+
+        <!-- 底部说明（修改为云端存储提示） -->
+        <div class="album-footer">
+          <p>📜 风物同步至云端，多设备访问一致 | 点击图片可查看大图</p>
+        </div>
+      </div>
+
+      <!-- 上传图片弹窗 -->
+      <div v-if="isUploadModalOpen"> <!-- 注意变量名一致性，原代码混用isAddModalOpen/isUploadModalOpen -->
+  <div class="modal-mask" @click="closeUploadModal"></div>
+  <div class="add-modal">
+    <div class="modal-header">
+      <h2>上传江湖风物</h2>
+      <button class="close-btn" @click="closeUploadModal">×</button>
+    </div>
+    <form class="upload-form" @submit.prevent="uploadPhoto">
+      <!-- 表单内容保持不变 -->
+    </form>
+  </div>
+</div>
+          <h2>上传江湖风物</h2>
+          <button class="close-btn" @click="closeUploadModal">×</button>
+        </div>
+        <form class="upload-form" @submit.prevent="uploadPhoto">
+          <div class="form-group">
+            <label>风物标题：</label>
+            <input
+              type="text"
+              v-model="newPhoto.title"
+              required
+              placeholder="请输入图片描述（如：开封秘境全景）"
+            >
+          </div>
+          <div class="form-group">
+            <label>分类：</label>
+            <select v-model="newPhoto.category" required>
+              <option value="">请选择分类</option>
+              <option value="秘境">秘境风光</option>
+              <option value="合影">侠客合影</option>
+              <option value="图谱">武学图谱</option>
+              <option value="奇珍">异兽奇珍</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>上传图片：</label>
+            <input
+              type="file"
+              accept="image/*"
+              @change="handlePhotoUpload"
+              required
+            >
+            <p class="tip">支持JPG、PNG格式，建议尺寸不超过2MB</p>
+          </div>
+          <div class="form-btns">
+            <button type="button" class="cancel-btn" @click="closeUploadModal">取消</button>
+            <button type="submit" class="confirm-btn" :disabled="isSubmitting">
+              <span v-if="isSubmitting">上传中...</span>
+              <span v-else>确认上传</span>
+            </button>
+          </div>
+        </form>
+
+      <!-- 大图预览弹窗 -->
+      <div class="preview-mask" v-if="isPreviewOpen" @click="closePreview"></div>
+      <div class="preview-modal" v-if="isPreviewOpen">
+        <button class="preview-close" @click="closePreview">×</button>
+        <div class="preview-content">
+          <img :src="currentPhoto.url" :alt="currentPhoto.title" class="preview-img" @error="handlePhotoError($event)">
+          <div class="preview-info">
+            <h3>{{ currentPhoto.title }}</h3>
+            <p>分类：{{ currentPhoto.category }}</p>
+            <button class="delete-btn" @click="deletePhoto(currentPhoto._id)">删除该风物</button>
+          </div>
+        </div>
+      </div>
+  `,
+      data() {
+        return {
+          activeCategory: 'all', // 分类筛选
+          isAddModalOpen: false, // 上传弹窗开关
+          isPreviewOpen: false, // 预览弹窗开关
+          currentPhoto: {}, // 当前预览图片
+          newPhoto: { // 新图片表单数据
+            title: '',
+            category: '',
+            url: '' // 图片Base64
+          },
+          photos: [], // 图片列表（后端返回数据）
+          isLoading: false, // 加载状态
+          isSubmitting: false // 提交状态
+        };
+      },
+      computed: {
+        // 分类筛选逻辑（保留原有功能）
+        filteredPhotos() {
+          if (this.activeCategory === 'all') return this.photos;
+          return this.photos.filter(photo => photo.category === this.activeCategory);
+        }
+      },
+      mounted() {
+        // 页面加载时从后端获取图片数据（替换原localStorage读取）
+        this.fetchPhotos();
+      },
+      methods: {
+        // 1. 从后端获取图片列表（核心接口调用）
+        async fetchPhotos() {
+          this.isLoading = true;
+          try {
+            const BASE_URL = "http://39.107.247.51:3306";
+            let url = `${BASE_URL}/api/photos`;
+
+            // 拼接分类参数
+            if (this.activeCategory !== 'all') {
+              url += `?category=${this.activeCategory}`;
+            }
+
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('获取江湖风物失败');
+            const data = await res.json();
+
+            // 给每个图片添加hover状态（适配原有样式）
+            this.photos = data.map(photo => ({ ...photo, hover: false }));
+          } catch (err) {
+            console.error('错误：', err.message);
+            alert('获取江湖风物失败，请刷新页面重试');
+          } finally {
+            this.isLoading = false;
+          }
+        },
+
+        // 2. 上传图片到后端（替换原localStorage存储）
+        async uploadPhoto() {
+          this.isSubmitting = true;
+          try {
+              const BASE_URL = "http://39.107.247.51:3306";
+            const res = await fetch(`${BASE_URL}/api/photos`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(this.newPhoto) // 提交Base64格式图片
+            });
+
+            if (!res.ok) throw new Error('上传风物失败');
+            const newPhotoData = await res.json();
+
+            // 实时更新列表
+            this.photos.unshift({ ...newPhotoData, hover: false });
+            this.closeUploadModal();
+            alert('风物上传成功！');
+          } catch (err) {
+            console.error('错误：', err.message);
+            alert('上传失败，请检查图片大小（不超过2MB）并重试');
+          } finally {
+            this.isSubmitting = false;
+          }
+        },
+
+        // 3. 从后端删除图片（核心接口调用）
+        async deletePhoto(photoId) {
+          if (!confirm('确定要删除该风物吗？删除后不可恢复~')) return;
+
+          try {
+            const BASE_URL = "http://39.107.247.51:3306";
+            const res = await fetch(`${BASE_URL}/api/photos/${photoId}`, {
+              method: 'DELETE'
+            });
+
+            if (!res.ok) throw new Error('删除风物失败');
+
+            // 实时更新列表（无需重新请求）
+            this.photos = this.photos.filter(photo => photo._id !== photoId);
+            this.closePreview();
+            alert('风物删除成功！');
+          } catch (err) {
+            console.error('错误：', err.message);
+            alert('删除失败，请重试');
+          }
+        },
+
+        // 4. 原有辅助方法（保留不变，适配后端数据）
+        handlePhotoUpload(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          // 限制图片大小（2MB）
+          if (file.size > 2 * 1024 * 1024) {
+            alert('图片大小不能超过2MB，请选择更小的图片~');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (res) => {
+            this.newPhoto.url = res.target.result; // 转为Base64
+          };
+          reader.readAsDataURL(file);
+        },
+        openUploadModal() {
+          this.isAddModalOpen = true;
+          this.newPhoto = { title: '', category: '', url: '' };
+        },
+        closeUploadModal() {
+          this.isAddModalOpen = false;
+        },
+        openPreview(photo) {
+          this.currentPhoto = photo;
+          this.isPreviewOpen = true;
+          document.body.style.overflow = 'hidden';
+        },
+        closePreview() {
+          this.isPreviewOpen = false;
+          this.currentPhoto = {};
+          document.body.style.overflow = 'auto';
+        },
+        handlePhotoError(e) {
+          e.target.src = 'img/album/default-placeholder.png'; // 图片加载失败兜底（需自行准备占位图）
+        }
+      }
+    };
+
+    // 3. 配置路由规则（保留原有）
+    const routes = [
+      { path: '/', component: Home }, // 首页（默认路由）
+      { path: '/notice', component: Notice }, // 公告页
+      { path: '/roster', component: Roster }, // 花名册页（已修改）
+      { path: '/album', component: Album } // 相册页（已修改）
+    ];
+
+    // 4. 创建路由实例（hash模式，URL带#，无需后端配置）
+    const router = new VueRouter({
+      routes,
+      mode: 'hash'
+    });
+
+    // 5. 创建Vue根实例（保留原有导航栏逻辑）
+    new Vue({
+      el: '#app-root',
+      router,
+      data() {
+        return {
+          isNavShow: false,
+          hideTimer: null, // 延迟隐藏计时器（关键：控制回收时机）
+          hideDelay: 300 // 延迟回收时间（300ms，可调整）
+        };
+      },
+      methods: {
+        // 1. 鼠标进入触发区/导航栏：立即显示导航栏，清除延迟计时器
+        showNav() {
+          clearTimeout(this.hideTimer);
+          this.isNavShow = true;
+        },
+        // 2. 鼠标在导航栏内：保持显示，清除计时器（防止误回收）
+        keepNavShow() {
+          clearTimeout(this.hideTimer);
+          this.isNavShow = true;
+        },
+        // 3. 鼠标离开触发区/导航栏：启动延迟计时器，到期后回收
+        startHideTimer() {
+          clearTimeout(this.hideTimer); // 先清除旧计时器，避免叠加
+          this.hideTimer = setTimeout(() => {
+            this.isNavShow = false;
+          }, this.hideDelay);
+        }
+      },
+      beforeDestroy() {
+        clearTimeout(this.hideTimer); // 组件销毁时清除计时器，避免内存泄漏
+      }
+    });
   </script>
+
 </body>
 
 </html>

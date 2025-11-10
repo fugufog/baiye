@@ -1,0 +1,9 @@
+密码：O2oaPg3eue>g
+
+
+# 登录MySQL后执行
+use mysql;
+# 允许root从任意IP访问（%表示任意IP，生产环境建议替换为具体IP，如192.168.1.100）
+update user set host = '%' where user = 'root';
+# 刷新权限使配置生效
+flush privileges;

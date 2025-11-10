@@ -1,0 +1,465 @@
+/* 相册页面核心样式 */
+.album-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    font-family: "Ma Shan Zheng", serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 背景（宣纸纹理+纯色） */
+.album-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF8E7;
+    background-image: linear-gradient(rgba(224, 201, 153, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 201, 153, 0.08) 1px, transparent 1px);
+    background-size: 15px 15px;
+    opacity: 0.95;
+    z-index: -1;
+}
+
+/* 主体容器 */
+.album-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255, 253, 245, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(102, 60, 20, 0.2);
+    border: 1px solid rgba(165, 120, 60, 0.3);
+    margin-top: 50px;
+}
+
+/* 标题区 */
+.album-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.album-header h1 {
+    font-size: 36px;
+    color: #8B4513;
+    margin: 0 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-decoration {
+    width: 60px;
+    height: 40px;
+    background-color: #A5783C;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+/* 顶部（说明+上传按钮） */
+.album-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.album-intro {
+    font-size: 18px;
+    color: #5D2906;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0 20px;
+}
+
+.upload-btn {
+    padding: 10px 25px;
+    background: #A5783C;
+    color: #FFF;
+    border: none;
+    border-radius: 30px;
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(165, 120, 60, 0.3);
+}
+
+.upload-btn:hover {
+    background: #8B5A2B;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(165, 120, 60, 0.5);
+}
+
+/* 分类标签 */
+.album-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.album-tab {
+    padding: 8px 20px;
+    background: #F5F0E6;
+    border: 2px solid #A5783C;
+    border-radius: 30px;
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 18px;
+    color: #8B4513;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.album-tab:hover {
+    background: #E8D9B9;
+    transform: translateY(-2px);
+}
+
+.album-tab.active {
+    background: #A5783C;
+    color: #FFF;
+    box-shadow: 0 0 10px rgba(165, 120, 60, 0.5);
+}
+
+/* 图片网格布局 */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+/* 图片卡片 */
+.photo-card {
+    background: #FFF;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(102, 60, 20, 0.1);
+    border: 1px solid #E0C999;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.photo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(102, 60, 20, 0.15);
+}
+
+.photo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover .photo-img {
+    transform: scale(1.05);
+}
+
+.photo-category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 3px 10px;
+    background: rgba(165, 120, 60, 0.8);
+    color: #FFF;
+    font-size: 14px;
+    border-radius: 20px;
+}
+
+.photo-title {
+    padding: 15px;
+    font-size: 16px;
+    color: #5D2906;
+    text-align: center;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.photo-title.show {
+    max-height: 50px;
+}
+
+/* 无图片提示 */
+.empty-photo {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 18px;
+    color: #7D4E24;
+    padding: 80px 0;
+    font-family: "Ma Shan Zheng", serif;
+}
+
+/* 上传弹窗样式 */
+.modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.upload-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    background: #FFF8E7;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(102, 60, 20, 0.3);
+    border: 2px solid #A5783C;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: #A5783C;
+    color: #FFF;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-family: "Ma Shan Zheng", serif;
+    font-size: 24px;
+    margin: 0;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #FFF;
+    font-size: 24px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.upload-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 16px;
+    color: #8B4513;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 15px;
+    border: 2px solid #E0C999;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #5D2906;
+    background: #FFF;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #A5783C;
+    box-shadow: 0 0 0 3px rgba(165, 120, 60, 0.1);
+}
+
+.tip {
+    font-size: 14px;
+    color: #7D4E24;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.form-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    background: #F5F0E6;
+    border: 2px solid #E0C999;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #7D4E24;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #E8D9B9;
+}
+
+.confirm-btn {
+    padding: 10px 25px;
+    background: #A5783C;
+    color: #FFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+    background: #8B5A2B;
+}
+
+/* 大图预览样式 */
+.preview-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-modal {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    background: #FFF;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 3px solid #A5783C;
+}
+
+.preview-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #FFF;
+    font-size: 28px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    transition: background 0.3s ease;
+}
+
+.preview-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.preview-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.preview-img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    background: #F5F0E6;
+}
+
+.preview-info {
+    padding: 20px;
+    background: #FFF8E7;
+    border-top: 1px solid #E0C999;
+}
+
+.preview-info h3 {
+    font-size: 22px;
+    color: #8B4513;
+    margin: 0 0 10px 0;
+}
+
+.preview-info p {
+    font-size: 16px;
+    color: #5D2906;
+    margin: 0 0 15px 0;
+}
+
+.delete-btn {
+    padding: 8px 20px;
+    background: #CD5C5C;
+    color: #FFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #B22222;
+}
+
+/* 底部说明 */
+.album-footer {
+    text-align: center;
+    font-size: 16px;
+    color: #5D2906;
+    padding-top: 20px;
+    border-top: 1px dashed #A5783C;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .photo-wrapper {
+        height: 150px;
+    }
+
+    .preview-img {
+        max-height: 60vh;
+    }
+}
